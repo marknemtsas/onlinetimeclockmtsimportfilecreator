@@ -1,0 +1,11 @@
+C:\Time Clock MTS\NETExtensions\OnlineTimeClockMTSExporter\OnlineTimeClockMTSExporter\obj\x86\Debug\OnlineTimeClockMTSImportFileCreator.csprojResolveAssemblyReference.cache
+C:\Time Clock MTS\NETExtensions\OnlineTimeClockMTSExporter\OnlineTimeClockMTSExporter\obj\x86\Debug\OnlineTimeClockMTSImportFileCreator.frmMain.resources
+C:\Time Clock MTS\NETExtensions\OnlineTimeClockMTSExporter\OnlineTimeClockMTSExporter\obj\x86\Debug\OnlineTimeClockMTSImportFileCreator.Properties.Resources.resources
+C:\Time Clock MTS\NETExtensions\OnlineTimeClockMTSExporter\OnlineTimeClockMTSExporter\obj\x86\Debug\OnlineTimeClockMTSImportFileCreator.csproj.GenerateResource.Cache
+C:\Time Clock MTS\NETExtensions\OnlineTimeClockMTSExporter\OnlineTimeClockMTSExporter\bin\Debug\OnlineTimeClockMTSImportFileCreator.exe.config
+C:\Time Clock MTS\NETExtensions\OnlineTimeClockMTSExporter\OnlineTimeClockMTSExporter\bin\Debug\OnlineTimeClockMTSImportFileCreator.exe
+C:\Time Clock MTS\NETExtensions\OnlineTimeClockMTSExporter\OnlineTimeClockMTSExporter\bin\Debug\OnlineTimeClockMTSImportFileCreator.pdb
+C:\Time Clock MTS\NETExtensions\OnlineTimeClockMTSExporter\OnlineTimeClockMTSExporter\bin\Debug\Newtonsoft.Json.pdb
+C:\Time Clock MTS\NETExtensions\OnlineTimeClockMTSExporter\OnlineTimeClockMTSExporter\bin\Debug\Newtonsoft.Json.xml
+C:\Time Clock MTS\NETExtensions\OnlineTimeClockMTSExporter\OnlineTimeClockMTSExporter\obj\x86\Debug\OnlineTimeClockMTSImportFileCreator.exe
+C:\Time Clock MTS\NETExtensions\OnlineTimeClockMTSExporter\OnlineTimeClockMTSExporter\obj\x86\Debug\OnlineTimeClockMTSImportFileCreator.pdb

@@ -1,0 +1,4 @@
+C:\Time Clock MTS\NETExtensions\OnlineTimeClockMTSExporter\OnlineTimeClockMTSExporter\OnlineTimeClockMTSExporter\bin\Debug\OnlineTimeClockMTSExporter.exe.config
+C:\Time Clock MTS\NETExtensions\OnlineTimeClockMTSExporter\OnlineTimeClockMTSExporter\OnlineTimeClockMTSExporter\bin\Debug\OnlineTimeClockMTSExportFileCreator.exe.config
+C:\Time Clock MTS\NETExtensions\OnlineTimeClockMTSExporter\OnlineTimeClockMTSExporter\OnlineTimeClockMTSExporter\bin\Debug\OnlineTimeClockMTSImportFileCreator.exe.config
+C:\Time Clock MTS\NETExtensions\OnlineTimeClockMTSExporter\OnlineTimeClockMTSExporter\bin\Debug\OnlineTimeClockMTSImportFileCreator.exe.config
