@@ -185,6 +185,7 @@
             this.btnCreateExportFile.Text = "Create Export File";
             this.toolTip1.SetToolTip(this.btnCreateExportFile, "Click to create the Online Time Clock MTS Export file.");
             this.btnCreateExportFile.UseVisualStyleBackColor = true;
+            this.btnCreateExportFile.Click += new System.EventHandler(this.btnCreateExportFile_Click);
             // 
             // btnCopyLog
             // 
