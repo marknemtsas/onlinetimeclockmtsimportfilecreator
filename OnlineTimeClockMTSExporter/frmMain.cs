@@ -49,7 +49,6 @@ namespace OnlineTimeClockMTSImportFileCreator
             this.logMessage("AccountLogin::" + this.txtAccountAdminLogin.Text);
             this.logMessage("ExportPath::" +this.txtExportFileLocation.Text);           
             this.FormClosing += new FormClosingEventHandler(frmMain_FormClosing);
-            this.btnCreateExportFile.Click+=new EventHandler(btnCreateExportFile_Click);
             this.btnBrowse.Click+=new EventHandler(btnBrowse_Click);
             this.btnBrowseExportLocation.Click+=new EventHandler(btnBrowseExportLocation_Click);
             this.btnClearLog.Click+=new EventHandler(btnClearLog_Click);
@@ -144,6 +143,14 @@ namespace OnlineTimeClockMTSImportFileCreator
             {
                 this.logMessage("Validating form data");
                 if (!this.validateForm())
+                {
+                    return;
+                }
+            }
+            //offer choice to overwrite existing file
+            if (application.bFileExists(this.txtExportFileLocation.Text.Trim()))
+            {
+                if (MessageBox.Show("An import file exists in that location.  Are you sure you want to overwrite it?", "Confirm Overwrite", MessageBoxButtons.YesNo) == DialogResult.No)
                 {
                     return;
                 }
@@ -392,6 +399,8 @@ namespace OnlineTimeClockMTSImportFileCreator
             //this.txtLog.Enabled = false;
         }
 #endregion
+
+
 
     }
 }
