@@ -32,9 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.txtAccountAdminLogin = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.txtAccountAdminPassword = new System.Windows.Forms.TextBox();
             this.txtAccount = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -76,15 +74,6 @@
             this.label6.TabIndex = 21;
             this.label6.Text = "Account Admin Login";
             // 
-            // txtAccountAdminPassword
-            // 
-            this.txtAccountAdminPassword.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAccountAdminPassword.Location = new System.Drawing.Point(186, 162);
-            this.txtAccountAdminPassword.Name = "txtAccountAdminPassword";
-            this.txtAccountAdminPassword.Size = new System.Drawing.Size(458, 25);
-            this.txtAccountAdminPassword.TabIndex = 4;
-            this.toolTip1.SetToolTip(this.txtAccountAdminPassword, "The password for your Online Time Clock MTS Account Administrator login");
-            // 
             // txtAccount
             // 
             this.txtAccount.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -93,16 +82,6 @@
             this.txtAccount.Size = new System.Drawing.Size(458, 25);
             this.txtAccount.TabIndex = 2;
             this.toolTip1.SetToolTip(this.txtAccount, "Your Online Time Clock MTS account name");
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(19, 165);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(155, 17);
-            this.label5.TabIndex = 20;
-            this.label5.Text = "Account Admin Password";
             // 
             // label4
             // 
@@ -157,7 +136,7 @@
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(139, 553);
+            this.linkLabel1.Location = new System.Drawing.Point(139, 523);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(325, 13);
             this.linkLabel1.TabIndex = 26;
@@ -167,7 +146,7 @@
             // btnClearLog
             // 
             this.btnClearLog.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClearLog.Location = new System.Drawing.Point(553, 525);
+            this.btnClearLog.Location = new System.Drawing.Point(553, 495);
             this.btnClearLog.Name = "btnClearLog";
             this.btnClearLog.Size = new System.Drawing.Size(91, 25);
             this.btnClearLog.TabIndex = 11;
@@ -178,7 +157,7 @@
             // btnCreateExportFile
             // 
             this.btnCreateExportFile.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCreateExportFile.Location = new System.Drawing.Point(22, 302);
+            this.btnCreateExportFile.Location = new System.Drawing.Point(22, 272);
             this.btnCreateExportFile.Name = "btnCreateExportFile";
             this.btnCreateExportFile.Size = new System.Drawing.Size(622, 36);
             this.btnCreateExportFile.TabIndex = 8;
@@ -190,7 +169,7 @@
             // btnCopyLog
             // 
             this.btnCopyLog.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCopyLog.Location = new System.Drawing.Point(553, 358);
+            this.btnCopyLog.Location = new System.Drawing.Point(553, 328);
             this.btnCopyLog.Name = "btnCopyLog";
             this.btnCopyLog.Size = new System.Drawing.Size(91, 161);
             this.btnCopyLog.TabIndex = 10;
@@ -199,7 +178,7 @@
             // 
             // txtLog
             // 
-            this.txtLog.Location = new System.Drawing.Point(22, 357);
+            this.txtLog.Location = new System.Drawing.Point(22, 327);
             this.txtLog.Multiline = true;
             this.txtLog.Name = "txtLog";
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -211,7 +190,7 @@
             // txtDataUploadToken
             // 
             this.txtDataUploadToken.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDataUploadToken.Location = new System.Drawing.Point(186, 193);
+            this.txtDataUploadToken.Location = new System.Drawing.Point(186, 163);
             this.txtDataUploadToken.Name = "txtDataUploadToken";
             this.txtDataUploadToken.Size = new System.Drawing.Size(458, 25);
             this.txtDataUploadToken.TabIndex = 5;
@@ -222,7 +201,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(19, 196);
+            this.label3.Location = new System.Drawing.Point(19, 166);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(120, 17);
             this.label3.TabIndex = 28;
@@ -232,7 +211,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(18, 231);
+            this.label7.Location = new System.Drawing.Point(18, 201);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(161, 21);
             this.label7.TabIndex = 31;
@@ -241,7 +220,7 @@
             // txtExportFileLocation
             // 
             this.txtExportFileLocation.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtExportFileLocation.Location = new System.Drawing.Point(22, 258);
+            this.txtExportFileLocation.Location = new System.Drawing.Point(22, 228);
             this.txtExportFileLocation.Name = "txtExportFileLocation";
             this.txtExportFileLocation.Size = new System.Drawing.Size(525, 25);
             this.txtExportFileLocation.TabIndex = 6;
@@ -250,7 +229,7 @@
             // btnBrowseExportLocation
             // 
             this.btnBrowseExportLocation.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnBrowseExportLocation.Location = new System.Drawing.Point(553, 258);
+            this.btnBrowseExportLocation.Location = new System.Drawing.Point(553, 228);
             this.btnBrowseExportLocation.Name = "btnBrowseExportLocation";
             this.btnBrowseExportLocation.Size = new System.Drawing.Size(91, 25);
             this.btnBrowseExportLocation.TabIndex = 7;
@@ -265,7 +244,7 @@
             // chkNoFormValidation
             // 
             this.chkNoFormValidation.AutoSize = true;
-            this.chkNoFormValidation.Location = new System.Drawing.Point(264, 223);
+            this.chkNoFormValidation.Location = new System.Drawing.Point(264, 193);
             this.chkNoFormValidation.Name = "chkNoFormValidation";
             this.chkNoFormValidation.Size = new System.Drawing.Size(115, 17);
             this.chkNoFormValidation.TabIndex = 32;
@@ -275,7 +254,7 @@
             // chkNoValidityChecks
             // 
             this.chkNoValidityChecks.AutoSize = true;
-            this.chkNoValidityChecks.Location = new System.Drawing.Point(399, 223);
+            this.chkNoValidityChecks.Location = new System.Drawing.Point(399, 193);
             this.chkNoValidityChecks.Name = "chkNoValidityChecks";
             this.chkNoValidityChecks.Size = new System.Drawing.Size(115, 17);
             this.chkNoValidityChecks.TabIndex = 33;
@@ -286,7 +265,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(662, 576);
+            this.ClientSize = new System.Drawing.Size(662, 544);
             this.Controls.Add(this.chkNoValidityChecks);
             this.Controls.Add(this.chkNoFormValidation);
             this.Controls.Add(this.label7);
@@ -301,9 +280,7 @@
             this.Controls.Add(this.txtLog);
             this.Controls.Add(this.txtAccountAdminLogin);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.txtAccountAdminPassword);
             this.Controls.Add(this.txtAccount);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -325,9 +302,7 @@
 
         private System.Windows.Forms.TextBox txtAccountAdminLogin;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox txtAccountAdminPassword;
         private System.Windows.Forms.TextBox txtAccount;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;

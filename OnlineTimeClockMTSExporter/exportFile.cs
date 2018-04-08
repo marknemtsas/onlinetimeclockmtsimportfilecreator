@@ -13,9 +13,9 @@ namespace OnlineTimeClockMTSImportFileCreator
         /// <summary>
         /// constructor
         /// </summary>
-        public exportFile(access pAccess, string pSavePath, string pAccount, string pAccountAdminLogin, string pAccountAdminPassword, string pDataUploadToken)
+        public exportFile(access pAccess, string pSavePath, string pAccount, string pAccountAdminLogin, string pDataUploadToken)
         {
-            this.exportHeader = new exportHeader( pAccount,  pAccountAdminLogin,  pAccountAdminPassword,  pDataUploadToken);
+            this.exportHeader = new exportHeader( pAccount,  pAccountAdminLogin,  pDataUploadToken);
             this.savePath = pSavePath;
             this.access = pAccess;
         }
@@ -119,11 +119,10 @@ namespace OnlineTimeClockMTSImportFileCreator
     /// </summary>
     internal class exportHeader
     {
-        public exportHeader(string pAccount, string pAccountAdminLogin, string pAccountAdminPassword, string pDataUploadToken)
+        public exportHeader(string pAccount, string pAccountAdminLogin,  string pDataUploadToken)
         {
             this.Account = pAccount;
             this.AccountAdminLogin = pAccountAdminLogin;
-            this.AccountAdminPassword = pAccountAdminPassword;
             this.DataUploadToken = pDataUploadToken;
         }
 

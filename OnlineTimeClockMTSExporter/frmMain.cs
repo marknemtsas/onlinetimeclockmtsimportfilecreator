@@ -28,7 +28,6 @@ namespace OnlineTimeClockMTSImportFileCreator
             }
             this.txtAccount.Text = application.AccountName;
             this.txtAccountAdminLogin.Text = application.AccountLogin;
-            this.txtAccountAdminPassword.Text=string.Empty;
             this.txtDataUploadToken.Text=string.Empty;
             if (application.ExportPath.Length == 0)
             {
@@ -81,7 +80,7 @@ namespace OnlineTimeClockMTSImportFileCreator
             //check if an access file is selected
             if (!application.bFileExists(this.txtDatabasePath.Text.Trim()))
             {
-                MessageBox.Show("You cannot create an export file without selecting a valid Time Clock MTS database first.");
+                MessageBox.Show("There is no valid Access database file in that location.");
                 this.txtDatabasePath.BackColor = Color.LightPink;
                 return false;
             }
@@ -89,7 +88,7 @@ namespace OnlineTimeClockMTSImportFileCreator
             //check if save export location is set
             if (!application.bDirectoryExists(System.IO.Path.GetDirectoryName(this.txtExportFileLocation.Text.Trim())))
             {
-                MessageBox.Show("You cannot create an export file choosing a location to save it to first.");
+                MessageBox.Show("The directory you are trying to create an import file in does not exist.");
                 this.txtExportFileLocation.BackColor = Color.LightPink;
                 return false;
             }
@@ -97,7 +96,7 @@ namespace OnlineTimeClockMTSImportFileCreator
 
             if (this.txtAccount.Text.Trim().Length < 6)
             {
-                MessageBox.Show("You cannot create an export file choosing a location to save it to first.");
+                MessageBox.Show("You must provide a valid Online Time Clock MTS Account Name to create an import file.");
                 this.txtAccount.BackColor = Color.LightPink;
                 return false;
             }
@@ -105,22 +104,15 @@ namespace OnlineTimeClockMTSImportFileCreator
 
             if (this.txtAccountAdminLogin.Text.Trim().Length < 6)
             {
-                MessageBox.Show("You cannot create an export file choosing a location to save it to first.");
+                MessageBox.Show("You must provide your Online Time Clock MTS account administrator login to create an import file.");
                 this.txtAccountAdminLogin.BackColor = Color.LightPink;
                 return false;
             }
             this.txtAccountAdminLogin.BackColor = Color.White;
 
-            if (this.txtAccountAdminPassword.Text.Trim().Length < 6)
-            {
-                MessageBox.Show("You cannot create an export file choosing a location to save it to first.");
-                this.txtAccountAdminPassword.BackColor = Color.White;
-                return false;
-            }
-            this.txtAccountAdminPassword.BackColor = Color.White;
             if (this.txtDataUploadToken.Text.Trim().Length < 6)
             {
-                MessageBox.Show("You cannot create an export file choosing a location to save it to first.");
+                MessageBox.Show("You must provide an Online Time Clock MTS Data Upload Token to create an import file.");
                 this.txtDataUploadToken.BackColor = Color.LightPink;
                 return false;
             }
@@ -170,7 +162,6 @@ namespace OnlineTimeClockMTSImportFileCreator
                                                                                         this.txtExportFileLocation.Text.Trim(),
                                                                                         this.txtAccount.Text.Trim(),
                                                                                         this.txtAccountAdminLogin.Text.Trim(),
-                                                                                        this.txtAccountAdminPassword.Text.Trim(),
                                                                                         this.txtDataUploadToken.Text.Trim());
             if (exportFile.createExportFile())
             {
