@@ -52,6 +52,7 @@
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.chkNoFormValidation = new System.Windows.Forms.CheckBox();
             this.chkNoValidityChecks = new System.Windows.Forms.CheckBox();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.SuspendLayout();
             // 
             // txtAccountAdminLogin
@@ -142,6 +143,7 @@
             this.linkLabel1.TabIndex = 26;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "View Online Help for the Online Time Clock MTS Export File Creator";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // btnClearLog
             // 
@@ -162,7 +164,7 @@
             this.btnCreateExportFile.Size = new System.Drawing.Size(622, 36);
             this.btnCreateExportFile.TabIndex = 8;
             this.btnCreateExportFile.Text = "Create Export File";
-            this.toolTip1.SetToolTip(this.btnCreateExportFile, "Click to create the Online Time Clock MTS Export file.");
+            this.toolTip1.SetToolTip(this.btnCreateExportFile, "Click to create the Export file.");
             this.btnCreateExportFile.UseVisualStyleBackColor = true;
             this.btnCreateExportFile.Click += new System.EventHandler(this.btnCreateExportFile_Click);
             // 
@@ -174,6 +176,7 @@
             this.btnCopyLog.Size = new System.Drawing.Size(91, 161);
             this.btnCopyLog.TabIndex = 10;
             this.btnCopyLog.Text = "Copy Log to Clipboard";
+            this.toolTip1.SetToolTip(this.btnCopyLog, "Click to copy the log text to the clipboard");
             this.btnCopyLog.UseVisualStyleBackColor = true;
             // 
             // txtLog
@@ -322,6 +325,7 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.CheckBox chkNoFormValidation;
         private System.Windows.Forms.CheckBox chkNoValidityChecks;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
 

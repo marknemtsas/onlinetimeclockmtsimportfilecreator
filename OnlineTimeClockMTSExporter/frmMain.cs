@@ -54,6 +54,15 @@ namespace OnlineTimeClockMTSImportFileCreator
             this.btnCopyLog.Click+=new EventHandler(btnCopyLog_Click);
             this.access = new access(this.txtDatabasePath.Text.Trim());
             this.access.LogEvent += new LogEventHandler(logEvent);
+
+#if DEBUG 
+            this.chkNoFormValidation.Visible = true;
+            this.chkNoValidityChecks.Visible = true;
+#else
+            this.chkNoFormValidation.Visible = false;
+            this.chkNoValidityChecks.Visible = false;            
+#endif
+
         }
         
         /// <summary>
@@ -250,20 +259,21 @@ namespace OnlineTimeClockMTSImportFileCreator
                 sPath = System.IO.Path.GetDirectoryName(this.txtDatabasePath.Text.Trim());
             }
 
-            this.openFileDialog1.InitialDirectory = sPath;
-            this.openFileDialog1.Title = "Find the Time Clock MTS Database";
-            this.openFileDialog1.Filter = "Database Files (*.json) | *.json|All Files (*.*) | *.*";
-            this.openFileDialog1.FileName = "";
-            this.openFileDialog1.Multiselect = false;
+            this.saveFileDialog1.InitialDirectory = sPath;
+            this.saveFileDialog1.AddExtension = true;
+            this.saveFileDialog1.DefaultExt = "json";
+            this.saveFileDialog1.Title = "Export File Location";
+            this.saveFileDialog1.Filter = "Time Clock MTS Export Files (*.json)|*.json";
+            this.saveFileDialog1.FileName = "";
 
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            if (this.saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
-                if (openFileDialog1.FileName.Length == 0)
+                if (this.saveFileDialog1.FileName.Length == 0)
                 {
                     MessageBox.Show("No Location Selected to Save Export File", "No Location Selected to Save Export File");
                     return;
                 }
-                sPath = openFileDialog1.FileName;
+                sPath = this.saveFileDialog1.FileName;
                 if (this.application.bFileExists(sPath))
                 {
                     if (MessageBox.Show("Export file exists, do you want to overwrite it?", "Export File Exists", MessageBoxButtons.YesNo) != DialogResult.Yes)
@@ -273,7 +283,7 @@ namespace OnlineTimeClockMTSImportFileCreator
                 }
                 else
                 {
-                    this.txtDatabasePath.Text = sPath;
+                    this.txtExportFileLocation.Text = sPath;
                 }
             }
         }
@@ -299,6 +309,15 @@ namespace OnlineTimeClockMTSImportFileCreator
             else
                 this.logMessage(e.Message);
         }
+        /// <summary>
+        /// Click event for help URL
+        /// </summary>
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            this.linkLabel1.LinkVisited = true;
+            System.Diagnostics.Process.Start("https://www.timeclockmts.com/support/exporting-time-clock-mts-data-online-time-clock-mts/");
+        }
+
         #endregion
 
         #region logging
@@ -390,7 +409,6 @@ namespace OnlineTimeClockMTSImportFileCreator
             //this.txtLog.Enabled = false;
         }
 #endregion
-
 
 
     }

@@ -58,7 +58,14 @@ namespace OnlineTimeClockMTSImportFileCreator
                     {
                         this.OnLogEvent(new LogEventArgs("generateDatabaseTables Reading Table " + sTableName));
                         exportTable = new Newtonsoft.Json.Linq.JObject();
-                        exportTable = this.createExportRows(sTableName, exportTable);
+                        if (sTableName.ToLower() == "tbltimes")
+                        {
+                            exportTable = this.createTimesExportRows(sTableName, exportTable);
+                        }
+                        else
+                        {
+                            exportTable = this.createExportRows(sTableName, exportTable);
+                        }
                         if (exportTable.Count > 0)
                         {
                             this.OnLogEvent(new LogEventArgs("generateDatabaseTables Data Created for Table " + sTableName));
@@ -81,6 +88,97 @@ namespace OnlineTimeClockMTSImportFileCreator
 
         }
 
+
+        /// <summary>
+        /// selects all rows from a tblTimes, creates a JObject object pair for each time punch pair with the field names and adds the row JObject to a parent table JObject
+        /// </summary>
+        /// 
+        private Newtonsoft.Json.Linq.JObject createTimesExportRows(string pTableName, Newtonsoft.Json.Linq.JObject pTable)
+        {
+            Int32 iLastEmployeeID=0, iCurrentEmployeeID=0;
+            Boolean bCurrentAction=true;
+            Newtonsoft.Json.Linq.JObject exportRow;
+            Newtonsoft.Json.Linq.JObject exportPunch;
+            Newtonsoft.Json.Linq.JObject exportTable = pTable;
+            string sTableName = pTableName;
+            Int32 iPunchCounter = 0, iRowCounter=0;
+            try
+            {
+                DataTable fields = this.getTableFields(pTableName);
+                Int32 iFieldNameColumn = fields.Columns.IndexOf("COLUMN_NAME");
+                Int32 iDataTypeColumn = fields.Columns.IndexOf("DATA_TYPE");
+                DbDataReader dataReader;
+                dataReader = this.returnDataReader("select tblTimes.* from " + sTableName + " inner join tblEmployees on tblTimes.lngEmployeeID=tblEmployees.lngID where tblEmployees.blnDeleted=FALSE order by tblTimes.lngEmployeeID ASC, tblTimes.datEvent ASC");
+                if (dataReader.HasRows)
+                {
+                    exportRow = new Newtonsoft.Json.Linq.JObject();
+                    while (dataReader.Read())
+                    {
+
+                        bCurrentAction = dataReader.GetBoolean(dataReader.GetOrdinal("blnEventType"));
+                        iCurrentEmployeeID=dataReader.GetInt32(dataReader.GetOrdinal("lngEmployeeID"));
+
+                        //new employee add export row
+                        if (iCurrentEmployeeID != iLastEmployeeID)
+                        {
+                            if (iLastEmployeeID > 0)
+                            {
+                                iPunchCounter++;
+                                exportTable.Add(iPunchCounter.ToString(), exportRow);
+                                exportRow = new Newtonsoft.Json.Linq.JObject();
+                            }
+                        }
+                        else
+                        {
+                            if (bCurrentAction) // if an in punch and the exportRow contains some punches then add the punch pair
+                            {
+                                if (exportRow.Count > 0) //
+                                {
+                                    iPunchCounter++;
+                                    exportTable.Add(iPunchCounter.ToString(), exportRow);
+                                    exportRow = new Newtonsoft.Json.Linq.JObject();
+                                }
+                            }
+                        }
+                        iLastEmployeeID = iCurrentEmployeeID;
+                        exportPunch = new Newtonsoft.Json.Linq.JObject();
+                        foreach (DataRow row in fields.Rows)
+                        {
+                            this.createExportJSONField(exportPunch, dataReader, row, iDataTypeColumn, row[iFieldNameColumn].ToString());
+                        }
+
+                        exportRow.Add((bCurrentAction)?"In":"Out", exportPunch);
+
+                        
+                        /*
+                         * Write log message to show something is still happening
+                         */
+                        iRowCounter++;
+                        if (iRowCounter % 100 == 0)
+                        {
+                            this.OnLogEvent(new LogEventArgs("createTimesExportRows processing time punch pair  " + iPunchCounter.ToString() + " (" + sTableName + ")", true));
+                        }
+                    }
+                    //add last time punch to collection
+                    if (exportRow != null && exportRow.Count > 0)
+                    {
+                        iPunchCounter++;
+                        exportTable.Add(iPunchCounter.ToString(), exportRow);
+                    }
+                }
+                else
+                {
+                    exportTable.Add("NoRows", 1);
+                }
+            }
+            catch (Exception e)
+            {
+                this.writeLog("createTimesExportRows :: " + e.ToString());
+                exportTable = new Newtonsoft.Json.Linq.JObject();
+            }
+            return exportTable;
+        }
+
         /// <summary>
         /// selects all rows from a table, creates a JObject for each row with the field names and adds the row JObject to a parent table JObject
         /// </summary>
@@ -89,7 +187,7 @@ namespace OnlineTimeClockMTSImportFileCreator
         {
             Newtonsoft.Json.Linq.JObject exportRow;
             Newtonsoft.Json.Linq.JObject exportTable = pTable;
-            string sTableName = pTableName, sFieldName = string.Empty;
+            string sTableName = pTableName;
             Int32 iRowCounter = 0;
             try
             {
@@ -105,94 +203,10 @@ namespace OnlineTimeClockMTSImportFileCreator
                         exportRow = new Newtonsoft.Json.Linq.JObject();
                         foreach (DataRow row in fields.Rows)
                         {
-                            sFieldName = row[iFieldNameColumn].ToString();
-                           
-                            if (this.fieldIsBoolean(row[iDataTypeColumn]))
-                            {
-                                try
-                                {
-
-                                    if (dataReader.GetBoolean(dataReader.GetOrdinal(sFieldName)))
-                                    {
-                                        exportRow.Add(sFieldName, 1);
-                                    }
-                                    else
-                                    {
-                                        exportRow.Add(sFieldName, 0);
-                                    }
-                                }
-                                catch (Exception e)
-                                {
-                                    Console.WriteLine("error converting fieldIsBoolean "+e.ToString());
-                                }
-                            }
-
-                            if (this.fieldIsDate(row[iDataTypeColumn]))
-                            {
-                                try
-                                {
-                                    exportRow.Add(sFieldName, dataReader.GetDateTime(dataReader.GetOrdinal(sFieldName)));
-                                    //exportRow.Add(sFieldName, ((DateTime)dataReader[sFieldName]).ToString());
-                                }
-                                catch (Exception e)
-                                {
-                                    Console.WriteLine("error converting fieldIsDate " + e.ToString());
-                                }
-                            }
-                            if (this.fieldIsInt(row[iDataTypeColumn]))
-                            {
-                                try
-                                {
-                                    //exportRow.Add(sFieldName, dataReader.GetInt32(iValueColumn).ToString());
-                                    exportRow.Add(sFieldName, dataReader.GetInt32(dataReader.GetOrdinal(sFieldName)));
-                                }
-                                catch (Exception e)
-                                {
-                                    Console.WriteLine("error converting fieldIsInt " + e.ToString());
-
-                                }
-                            }
-                            if (this.fieldIsSingle((Int32)row[iDataTypeColumn]) || this.fieldIsDouble(row[iDataTypeColumn]) || this.fieldIsCurrency(row[iDataTypeColumn]))
-                            {
-                                try
-                                {
-                                    //exportRow.Add(sFieldName, dataReader.GetDouble(iValueColumn).ToString());
-                                    exportRow.Add(sFieldName, dataReader.GetValue(dataReader.GetOrdinal(sFieldName)).ToString());
-                                }
-                                catch(Exception e)
-                                {
-                                    Console.WriteLine("error converting fieldIsSingle " + e.ToString());
-                                }
-                            }
-
-                            if (this.fieldIsString(row[iDataTypeColumn]))
-                            {
-                                try
-                                {
-                                    //exportRow.Add(sFieldName, dataReader.GetValue(iValueColumn).ToString());
-                                    exportRow.Add(sFieldName, dataReader[sFieldName].ToString());
-                                }
-                                catch (Exception e)
-                                {
-                                    Console.WriteLine("error converting fieldIsString " + e.ToString());
-                                }
-                            }
-                            if (this.fieldIsByte(row[iDataTypeColumn]))
-                            {
-                                try
-                                {
-                                    //exportRow.Add(sFieldName, dataReader.GetValue(iValueColumn).ToString());
-                                    exportRow.Add(sFieldName, dataReader.GetValue(dataReader.GetOrdinal(sFieldName)).ToString());
-                                }
-                                catch (Exception e)
-                                {
-                                    Console.WriteLine("error converting fieldIsByte " + e.ToString());
-                                }
-                            }
+                           this.createExportJSONField(exportRow,dataReader,row,iDataTypeColumn, row[iFieldNameColumn].ToString());
                         }
                         iRowCounter++;
-                        //if (sTableName!="tblTimes")
-                            exportTable.Add(iRowCounter.ToString(), exportRow);
+                        exportTable.Add(iRowCounter.ToString(), exportRow);
                         /*
                          * Write log message to show something is still happening
                          */
@@ -215,6 +229,99 @@ namespace OnlineTimeClockMTSImportFileCreator
             }
             return exportTable;
         }
+        /// <summary>
+        /// adds a field to a JSON object using a DataRow as a source
+        /// </summary>
+        /// 
+
+        public void createExportJSONField(Newtonsoft.Json.Linq.JObject exportRow, DbDataReader dataReader, DataRow row, Int32 iDataTypeColumn, string sFieldName)
+        {
+
+            if (this.fieldIsBoolean(row[iDataTypeColumn]))
+            {
+                try
+                {
+
+                    if (dataReader.GetBoolean(dataReader.GetOrdinal(sFieldName)))
+                    {
+                        exportRow.Add(sFieldName, 1);
+                    }
+                    else
+                    {
+                        exportRow.Add(sFieldName, 0);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("error converting fieldIsBoolean " + e.ToString());
+                }
+            }
+
+            if (this.fieldIsDate(row[iDataTypeColumn]))
+            {
+                try
+                {
+                    exportRow.Add(sFieldName, dataReader.GetDateTime(dataReader.GetOrdinal(sFieldName)));
+                    //exportRow.Add(sFieldName, ((DateTime)dataReader[sFieldName]).ToString());
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("error converting fieldIsDate " + e.ToString());
+                }
+            }
+            if (this.fieldIsInt(row[iDataTypeColumn]))
+            {
+                try
+                {
+                    //exportRow.Add(sFieldName, dataReader.GetInt32(iValueColumn).ToString());
+                    exportRow.Add(sFieldName, dataReader.GetInt32(dataReader.GetOrdinal(sFieldName)));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("error converting fieldIsInt " + e.ToString());
+
+                }
+            }
+            if (this.fieldIsSingle((Int32)row[iDataTypeColumn]) || this.fieldIsDouble(row[iDataTypeColumn]) || this.fieldIsCurrency(row[iDataTypeColumn]))
+            {
+                try
+                {
+                    //exportRow.Add(sFieldName, dataReader.GetDouble(iValueColumn).ToString());
+                    exportRow.Add(sFieldName, dataReader.GetValue(dataReader.GetOrdinal(sFieldName)).ToString());
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("error converting fieldIsSingle " + e.ToString());
+                }
+            }
+
+            if (this.fieldIsString(row[iDataTypeColumn]))
+            {
+                try
+                {
+                    //exportRow.Add(sFieldName, dataReader.GetValue(iValueColumn).ToString());
+                    exportRow.Add(sFieldName, dataReader[sFieldName].ToString());
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("error converting fieldIsString " + e.ToString());
+                }
+            }
+            if (this.fieldIsByte(row[iDataTypeColumn]))
+            {
+                try
+                {
+                    //exportRow.Add(sFieldName, dataReader.GetValue(iValueColumn).ToString());
+                    exportRow.Add(sFieldName, dataReader.GetValue(dataReader.GetOrdinal(sFieldName)).ToString());
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("error converting fieldIsByte " + e.ToString());
+                }
+            }
+
+        }
+
 #endregion
         #region Database Validity Checks
 
@@ -225,8 +332,33 @@ namespace OnlineTimeClockMTSImportFileCreator
         public bool checkValidDatabase(application application)
         {
             bool bReturn = true;
-            this.OnLogEvent(new LogEventArgs("Checking that Primary Keys Exist"));  
-            bReturn = checkPrimaryKeysExist(application);
+
+            try
+            {
+                //this.OnLogEvent(new LogEventArgs("Checking that Time Clock MTS Database Can be Opened"));
+                this.openConn();
+            }
+            catch (Exception e)
+            {
+                if (e.GetType().Name == typeof(System.Data.OleDb.OleDbException).Name)
+                {
+                    this.OnLogEvent(new LogEventArgs("Cannot open " + this.DatabasePath + ".  The file might be corrupt or not even a valid database."));
+                }
+                else
+                {
+                    this.OnLogEvent(new LogEventArgs("An unhandled exception has occurred trying to open " + this.DatabasePath));
+                    this.OnLogEvent(new LogEventArgs(e.ToString()));
+                }
+                bReturn = false;
+
+            }
+
+
+            if (bReturn)
+            {
+                this.OnLogEvent(new LogEventArgs("Checking that Primary Keys Exist"));
+                bReturn = checkPrimaryKeysExist(application);
+            }
 
             if (bReturn)
             {
@@ -333,7 +465,7 @@ namespace OnlineTimeClockMTSImportFileCreator
                     while (dataReaderEmployees.Read())
                     {
                         Console.WriteLine("Loading times for "+dataReaderEmployees["strFullName"].ToString()+ "("+dataReaderEmployees["lngID"]+")");
-                        dataReaderTimePunch = this.returnDataReader("select top 1 datEvent, blnEventType from tblTimes where lngEmployeeID=" + (Int32)dataReaderEmployees["lngID"], null, connLocal);
+                        dataReaderTimePunch = this.returnDataReader("select top 1 datEvent, blnEventType, lngID from tblTimes where lngEmployeeID=" + (Int32)dataReaderEmployees["lngID"]+" order by datEvent ASC", null, connLocal);
                         if (dataReaderTimePunch.HasRows)
                         {
                             while (dataReaderTimePunch.Read())
@@ -341,7 +473,7 @@ namespace OnlineTimeClockMTSImportFileCreator
                                 if ((bool)dataReaderTimePunch["blnEventType"] == false)
                                 {
                                     bReturn = false;
-                                    this.OnLogEvent(new LogEventArgs("Bad first time punch for " + dataReaderEmployees["strFullName"].ToString() + "(" + dataReaderEmployees["lngID"].ToString() + ")"));
+                                    this.OnLogEvent(new LogEventArgs("Bad first time punch for " + dataReaderEmployees["strFullName"].ToString() + "(Employee ID:" + dataReaderEmployees["lngID"].ToString() + " Time ID: " + dataReaderTimePunch["lngID"].ToString() + ")"));
                                 }
                             }
                         }
